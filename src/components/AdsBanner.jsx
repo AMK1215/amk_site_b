@@ -6,7 +6,12 @@ import BASE_URL from '../hooks/baseUrl';
 
 const AdsBanner = () => {
   const MySwal = withReactContent(Swal);
-  const { data: popup } = useFetch(BASE_URL + '/ads-banner');
+
+  // Fetch the data from the API
+  const { data: apiResponse } = useFetch(BASE_URL + '/ads-banner');
+
+  // Extract `data` from the API response safely
+  const popup = apiResponse?.data;
 
   const adsFire = () => {
     console.log('Executing adsFire function...');
@@ -14,7 +19,6 @@ const AdsBanner = () => {
 
     if (popup && popup.img_url) {
       console.log('Popup img_url exists:', popup.img_url);
-
       MySwal.fire({
         imageUrl: popup.img_url,
         imageHeight: 150,
@@ -29,15 +33,16 @@ const AdsBanner = () => {
 
   useEffect(() => {
     console.log('Running useEffect...');
-    console.log('Popup data from useFetch:', popup);
+    console.log('API Response:', apiResponse);
+    console.log('Popup data extracted:', popup);
 
-    if (popup?.img_url) {
+    if (popup && popup.img_url) {
       console.log('Popup img_url detected in useEffect:', popup.img_url);
       adsFire();
     } else {
       console.log('Popup or img_url is not ready yet.');
     }
-  }, [popup]);
+  }, [apiResponse, popup]);
 
   return <div></div>;
 };
