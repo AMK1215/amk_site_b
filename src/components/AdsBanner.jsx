@@ -6,29 +6,40 @@ import BASE_URL from '../hooks/baseUrl';
 
 const AdsBanner = () => {
   const MySwal = withReactContent(Swal);
-  const { data: popup } = useFetch(BASE_URL + '/ads-banner'); // Fetching popup data
+  const { data: popup } = useFetch(BASE_URL + '/ads-banner');
 
-  // Function to display the banner popup
   const adsFire = () => {
+    console.log('Executing adsFire function...');
+    console.log('Popup data inside adsFire:', popup);
+
     if (popup && popup.img_url) {
+      console.log('Popup img_url exists:', popup.img_url);
+
       MySwal.fire({
         imageUrl: popup.img_url,
         imageHeight: 150,
-        text: '🙏🏻မင်္ဂလာရှိသော နေ့ခင်းလေးပါ👦🏻 သူငယ်ချင်းမိတ်ဆက် 10%💰 🏠အိမ်မှာနေရင်း 🎰 AMK Max Win 999 မှာပူးပေါင်းပြီး🤝 အလွယ်တကူ ဝင်ငွေရှာလိုက်ပါ သူငယ်ချင်းမိတ်ဆက်ပေးပြီး ဘယ်မှာမှ မရနှိင်တဲ့ 🏆ဆုလက်ဆောင် 10% များရယူပါနော်  AMK Max Win 999 🙏🙏🙏🤝🙏🙏🙏',
+        text:
+          popup.text ||
+          '🙏🏻မင်္ဂလာရှိသော နေ့ခင်းလေးပါ👦🏻 သူငယ်ချင်းမိတ်ဆက် 10%💰 🏠အိမ်မှာနေရင်း 🎰 AMK Max Win 999 မှာပူးပေါင်းပြီး🤝 အလွယ်တကူ ဝင်ငွေရှာလိုက်ပါ သူငယ်ချင်းမိတ်ဆက်ပေးပြီး ဘယ်မှာမှ မရနှိင်တဲ့ 🏆ဆုလက်ဆောင် 10% များရယူပါနော်  AMK Max Win 999 🙏🙏🙏🤝🙏🙏🙏',
       });
     } else {
       console.warn('Popup data or img_url is not available.');
     }
   };
 
-  // Use effect to trigger the popup when popup.img_url is available
   useEffect(() => {
-    if (popup && popup.img_url) {
-      adsFire();
-    }
-  }, [popup]); // Only re-run effect if popup changes
+    console.log('Running useEffect...');
+    console.log('Popup data from useFetch:', popup);
 
-  return <div></div>; // Empty div as placeholder
+    if (popup?.img_url) {
+      console.log('Popup img_url detected in useEffect:', popup.img_url);
+      adsFire();
+    } else {
+      console.log('Popup or img_url is not ready yet.');
+    }
+  }, [popup]);
+
+  return <div></div>;
 };
 
 export default AdsBanner;
